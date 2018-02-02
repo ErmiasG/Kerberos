@@ -1,0 +1,28 @@
+access to dn.base=""
+    by * read
+
+access to dn.base="cn=Subschema"
+    by * read
+
+access to attrs=userPassword,userPKCS12
+    by self write
+    by * auth
+
+access to attrs=shadowLastChange
+    by self write
+    by * read
+
+# Providing access to realm container
+access to dn.subtree= "cn=EXAMPLE.COM,cn=krbContainer,dc=example,dc=com"
+    by dn.exact="cn=admin,dc=example,dc=com" write
+    by * none
+
+# Providing access to principals, if not underneath realm container
+access to dn.subtree= "ou=users,dc=example,dc=com"
+    by dn.exact="cn=admin,dc=example,dc=com" write
+    by * none
+
+access to *
+    by * read
+
+*/admin@EXAMPLE.COM    *

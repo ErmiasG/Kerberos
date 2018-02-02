@@ -15,38 +15,10 @@ touch /var/log/kerberos/kadmind.log > /dev/null 2>&1
 DNS_ZONE="example.com"
 REALM=$(echo "$DNS_ZONE" | tr '[:lower:]' '[:upper:]')
 KERBEROS_FQDN="krbldap.example.com"
+ADMIN_PW=ldap-admin
+KDC_DB_KEY=kdcdbkey
 
-cat > /etc/krb5.conf <<EOF
-[realms]
-    ${REALM} = {
-        kdc = ${KERBEROS_FQDN}:8888
-        kdc = localhost:8888
-        kdc = 127.0.0.1:8888
-        kdc = ${KERBEROS_FQDN}:88
-        kdc = localhost:88
-        kdc = 127.0.0.1:88
-        #admin_server = ${KERBEROS_FQDN}:8749
-        default_domain = ${DNS_ZONE}
-    }
-[domain_realm]
-    .${DNS_ZONE} = ${REALM}
-    ${DNS_ZONE} = ${REALM}
-[libdefaults]
-    default_realm = ${REALM}
-    dns_lookup_realm = false
-    dns_lookup_kdc = false
-    forwardable=true
-    dns_canonicalize_hostname = false
-    rdns = false
-    ignore_acceptor_hostname = true
-    allow_weak_crypto = true
-#[kdc]
-#    profile = /etc/krb5kdc/kdc.conf
-#[logging]
-#    default = FILE:/var/log/kerberos/krb5libs.log
-#    kdc = FILE:/var/log/kerberos/krb5kdc.log
-#    admin_server = FILE:/var/log/kerberos/kadmind.log
-EOF
+cat /vagrant/Resource/kerberos/krb5.conf > /etc/krb5.conf 
 
 sed -i -e 's/${KERBEROS_FQDN}/'$KERBEROS_FQDN'/g' /etc/krb5.conf
 sed -i -e 's/${DNS_ZONE}/'$DNS_ZONE'/g' /etc/krb5.conf
@@ -57,42 +29,35 @@ cp /etc/krb5.conf /vagrant/krb5.conf
 mkdir -p /etc/krb5kdc
 mkdir -p /var/lib/krb5kdc
 
-cat > /etc/krb5kdc/kdc.conf <<EOF
-[libdefaults]
-        debug = true
-
-[logging]
-    kdc = FILE:/var/log/krb5kdc.log
-[kdcdefaults]
-    kdc_ports = 749,88
-    kdc_tcp_ports = 88
-    default_realm = ${REALM}
-[realms]
-    ${REALM} = {
-        database_name = /var/lib/krb5kdc/principal
-        admin_keytab = FILE:/etc/krb5kdc/kadm5.keytab
-        acl_file = /etc/krb5kdc/kadm5.acl
-        key_stash_file = /etc/krb5kdc/stash
-
-        kdc_ports = 749,88
-        max_life = 10h 0m 0s
-        max_renewable_life = 7d 0h 0m 0s
-        master_key_type = des3-hmac-sha1
-        supported_enctypes = des3-hmac-sha1:normal des-cbc-crc:normal des:normal des:v4 des:norealm des:onlyrealm
-        #supported_enctypes = aes256-cts:normal arcfour-hmac:normal des3-hmac-sha1:normal des-cbc-crc:normal des:normal des:v4 des:norealm des:onlyrealm des:afs3
-        default_principal_flags = +preauth
-    }
-EOF
+cat /vagrant/Resource/kerberos/kdc.conf > /etc/krb5kdc/kdc.conf 
 sed -i -e 's/${REALM}/'$REALM'/g' /etc/krb5kdc/kdc.conf
 cat /etc/krb5kdc/kdc.conf
 
-cat > /etc/krb5kdc/kadm5.acl <<EOF
-*/admin@EXAMPLE.COM    *
+cat /vagrant/Resource/kerberos/kadm5.acl > /etc/krb5kdc/kadm5.acl
+
+sudo apt-get -qqy install krb5-kdc krb5-admin-server krb5-kdc-ldap
+
+sudo gzip -d /usr/share/doc/krb5-kdc-ldap/kerberos.schema.gz
+sudo cp /usr/share/doc/krb5-kdc-ldap/kerberos.schema /etc/ldap/schema/
+
+mkdir /tmp/krb_ldif_output
+slapcat -f /vagrant/Resource/kerberos/schema_convert.conf -F /tmp/krb_ldif_output -n0 -s "cn={12}kerberos,cn=schema,cn=config" > /tmp/cn=kerberos.ldif 
+sed -i '/structuralObjectClass: olcSchemaConfig/Q' /tmp/cn\=kerberos.ldif
+sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f /tmp/cn\=kerberos.ldif
+
+sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// -v -f /vagrant/Resource/kerberos/krb5principalname.ldif
+sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// -v -f /vagrant/Resource/kerberos/acl.ldif
+
+sudo kdb5_ldap_util -D  cn=admin,dc=example,dc=com -w $ADMIN_PW create -subtrees dc=example,dc=com -r EXAMPLE.COM -s -H ldap:/// -P $KDC_DB_KEY
+sudo kdb5_ldap_util -D  cn=admin,dc=example,dc=com -w $ADMIN_PW stashsrvpw -f /etc/krb5kdc/service.keyfile cn=admin,dc=example,dc=com <<EOF
+$ADMIN_PW
+$ADMIN_PW
 EOF
 
-sudo apt-get -qqy install krb5-kdc krb5-admin-server
-
-sudo kdb5_util create -s -P aaaBBBccc123
+#sudo kdb5_util create -s -P $KDC_DB_KEY
+#sudo systemctl start krb5-kdc.service
+#sudo systemctl start krb5-admin-server.service
+#sudo systemctl restart slapd.service
 sudo /etc/init.d/krb5-kdc restart
 sudo /etc/init.d/krb5-admin-server restart
 sudo /etc/init.d/slapd restart
@@ -101,6 +66,23 @@ sudo /usr/sbin/kadmin.local -q 'addprinc -randkey HTTP/localhost'
 sudo /usr/sbin/kadmin.local -q "ktadd -k /tmp/http_srv.keytab  HTTP/localhost"
 sudo /usr/sbin/kadmin.local -q 'addprinc -randkey admin/admin'
 sudo /usr/sbin/kadmin.local -q "ktadd -k /tmp/admin.keytab admin/admin"
+
+sudo kadmin.local -q "addprinc -x dn="uid=john,ou=People,dc=example,dc=com" john" <<EOF 
+johnldap
+johnldap
+EOF
+sudo kadmin.local -q "addprinc -x dn="uid=george,ou=People,dc=example,dc=com" george" <<EOF 
+georgeldap
+georgeldap
+EOF
+sudo kadmin.local -q "addprinc -x dn="uid=tkelly,ou=People,dc=example,dc=com" tkelly" <<EOF 
+tkellyldap
+tkellyldap
+EOF
+sudo kadmin.local -q "addprinc -x dn="uid=tlabonte,ou=People,dc=example,dc=com" tlabonte" <<EOF 
+tlabonteldap
+tlabonteldap
+EOF
 
 sudo kinit -V -kt /tmp/admin.keytab admin/admin@EXAMPLE.COM
 

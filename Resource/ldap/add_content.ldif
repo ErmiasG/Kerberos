@@ -1,0 +1,334 @@
+dn: ou=People,dc=example,dc=com
+objectClass: organizationalUnit
+ou: People
+
+dn: ou=Groups,dc=example,dc=com
+objectClass: organizationalUnit
+ou: Groups
+
+dn: cn=miners,ou=Groups,dc=example,dc=com
+objectClass: posixGroup
+cn: miners
+gidNumber: 5000
+
+dn: uid=john,ou=People,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: john
+sn: Doe
+givenName: John
+cn: John Doe
+displayName: John Doe
+uidNumber: 1000
+gidNumber: 5000
+userPassword: johnldap
+gecos: John Doe
+mail: john@example.com
+mail: johnd@example.com
+mail: john.d@example.com
+ou: IT
+loginShell: /bin/bash
+homeDirectory: /home/john
+
+dn: uid=george,ou=People,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: george
+sn: Doe
+givenName: George
+cn: George Doe
+displayName: George Doe
+uidNumber: 1001
+gidNumber: 5000
+userPassword: georgeldap
+gecos: george
+mail: george@example.com
+mail: georged@example.com
+mail: george.d@example.com
+ou: Human Resources
+loginShell: /bin/bash
+homeDirectory: /home/george
+
+dn: uid=tkelly,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: shadowAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+uid: tkelly
+#classOfService: gold
+userpassword: tkellyldap
+facsimiletelephonenumber: +1 408 555 1992
+givenname: Timothy
+cn: Timothy Kelly
+telephonenumber: +1 408 555 4295
+sn: Kelly
+roomnumber: 3107
+homeDirectory: /home/tkelly
+mail: tkelly@example.com
+mail: timothy.kelly@example.com
+mail: timothykelly@example.com
+l: Santa Clara
+ou: Product Development
+uidNumber: 1065
+gidNumber: 5000
+
+dn: uid=tlabonte,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: shadowAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+uid: tlabonte
+#classOfService: gold
+userpassword: tlabonteldap
+facsimiletelephonenumber: +1 408 555 9751
+givenname: Tim
+cn: Tim Labonte
+telephonenumber: +1 408 555 0058
+sn: Labonte
+roomnumber: 1426
+homeDirectory: /home/tlabonte
+mail: tlabonte@example.com
+mail: tlabontel@example.com
+l: Cupertino
+ou: IT
+ou: People
+uidNumber: 1054
+gidNumber: 5000
+
+dn: uid=tmason,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: shadowAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+uid: tmason
+#classOfService: silver
+userpassword: tmasonldap
+facsimiletelephonenumber: +1 408 555 9751
+givenname: Torrey
+cn: Torrey Mason
+telephonenumber: +1 408 555 1596
+sn: Mason
+roomnumber: 1124
+homeDirectory: /home/tmason
+mail: tmason@example.com
+l: Sunnyvale
+ou: Human Resources
+ou: People
+uidNumber: 1016
+gidNumber: 5000
+
+dn: uid=tmorris,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: shadowAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+uid: tmorris
+#classOfService: gold
+userpassword: tmorrisldap
+facsimiletelephonenumber: +1 408 555 8473
+givenname: Ted
+cn: Ted Morris
+telephonenumber: +1 408 555 9187
+sn: Morris
+roomnumber: 4117
+homeDirectory: /home/tmorris
+mail: tmorris@example.com
+l: Santa Clara
+ou: Accounting
+ou: People
+uidNumber: 1003
+gidNumber: 5000
+
+dn: uid=tpierce,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: shadowAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+uid: tpierce
+#classOfService: gold
+userpassword: tpierceldap
+facsimiletelephonenumber: +1 408 555 9332
+givenname: Tobias
+cn: Tobias Pierce
+telephonenumber: +1 408 555 1531
+sn: Pierce
+roomnumber: 1383
+homeDirectory: /home/tpierce
+mail: tpierce@example.com
+l: Sunnyvale
+ou: IT
+ou: People
+uidNumber: 1042
+gidNumber: 5000
+
+dn: uid=trigden,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: shadowAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+uid: trigden
+#classOfService: gold
+userpassword: trigdenldap
+facsimiletelephonenumber: +1 408 555 8473
+givenname: Torrey
+cn: Torrey Rigden
+telephonenumber: +1 408 555 9280
+sn: Rigden
+roomnumber: 3584
+homeDirectory: /home/trigden
+mail: trigden@example.com
+l: Santa Clara
+ou: Product Development
+ou: People
+uidNumber: 1009
+gidNumber: 5000
+
+dn: uid=tschmith,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: shadowAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+uid: tschmith
+#classOfService: gold
+userpassword: tschmithldap
+facsimiletelephonenumber: +1 408 555 1992
+givenname: Tobias
+cn: Tobias Schmith
+telephonenumber: +1 408 555 9626
+sn: Schmith
+roomnumber: 4607
+homeDirectory: /home/tschmith
+mail: tschmith@example.com
+l: Cupertino
+ou: IT
+ou: People
+uidNumber: 1100
+gidNumber: 5000
+
+dn: uid=tschneid,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: shadowAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+uid: tschneid
+#classOfService: silver
+userpassword: tschneidldap
+facsimiletelephonenumber: +1 408 555 8473
+givenname: Torrey
+cn: Torrey Schneider
+telephonenumber: +1 408 555 7086
+sn: Schneider
+roomnumber: 2292
+homeDirectory: /home/tschneid
+mail: tschneid@example.com
+l: Sunnyvale
+ou: IT
+ou: People
+uidNumber: 1057
+gidNumber: 5000
+
+dn: uid=ttully,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: shadowAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+uid: ttully
+#classOfService: silver
+userpassword: ttullyldap
+facsimiletelephonenumber: +1 408 555 0111
+givenname: Torrey
+cn: Torrey Tully
+telephonenumber: +1 408 555 2274
+sn: Tully
+roomnumber: 3924
+homeDirectory: /home/ttully
+mail: ttully@example.com
+l: Sunnyvale
+ou: Human Resources
+ou: People
+uidNumber: 1130
+gidNumber: 5000
+
+dn: uid=tward,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: shadowAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+uid: tward
+#classOfService: silver
+userpassword: twardldap
+facsimiletelephonenumber: +1 408 555 4661
+givenname: Tobias
+cn: Tobias Ward
+telephonenumber: +1 408 555 7202
+sn: Ward
+roomnumber: 2238
+homeDirectory: /home/tward
+mail: tward@example.com
+l: Santa Clara
+ou: IT
+ou: People
+uidNumber: 1091
+gidNumber: 5000
+
+dn: uid=wlutz,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: shadowAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+uid: wlutz
+#classOfService: silver
+userpassword: wlutzldap
+facsimiletelephonenumber: +1 408 555 9332
+givenname: Wendy
+cn: Wendy Lutz
+telephonenumber: +1 408 555 3358
+sn: Lutz
+roomnumber: 4912
+homeDirectory: /home/wlutz
+mail: wlutz@example.com
+mail: wlutzl@example.com
+l: Santa Clara
+ou: Human Resources
+ou: People
+uidNumber: 1109
+gidNumber: 5000
+
+dn: cn=HR Managers,ou=groups,dc=example,dc=com
+objectClass: groupofnames
+objectClass: top
+ou: groups
+description: People who can manage HR entries
+member: uid=george,ou=People,dc=example,dc=com
+member: uid=wlutz,ou=People,dc=example,dc=com
+member: uid=ttully,ou=People,dc=example,dc=com
+cn: HR Managers
+
+dn: cn=ITpeople,ou=groups,dc=example,dc=com
+objectclass: groupOfURLs
+cn: ITpeople
+memberURL: ldap:///ou=People,dc=example,dc=com??sub?(ou=IT)

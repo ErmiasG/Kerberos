@@ -11,20 +11,20 @@ EOF
 sudo apt-get update > /dev/null 2>&1
 sudo apt-get install -y --no-install-recommends slapd ldap-utils
 
-sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f /vagrant/Resource/config.ldif
+sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f /vagrant/Resource/ldap/config.ldif
 
 mkdir /tmp/ldif_output
 
-slapcat -f /vagrant/Resource/schema_convert.conf -F /tmp/ldif_output -n0 -s "cn={5}dyngroup,cn=schema,cn=config" > /tmp/cn=dyngroup.ldif
+slapcat -f /vagrant/Resource/ldap/schema_convert.conf -F /tmp/ldif_output -n0 -s "cn={5}dyngroup,cn=schema,cn=config" > /tmp/cn=dyngroup.ldif
 
 sed -i '/structuralObjectClass: olcSchemaConfig/Q' /tmp/cn\=dyngroup.ldif
 
 sudo ldapadd -Y EXTERNAL -H ldapi:/// -f /tmp/cn\=dyngroup.ldif
 
-sudo ldapadd -Y EXTERNAL -H ldapi:/// -v -f /vagrant/Resource/dbconfig.ldif
+sudo ldapadd -Y EXTERNAL -H ldapi:/// -v -f /vagrant/Resource/ldap/dbconfig.ldif
 
-sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f /vagrant/Resource/load_modules.ldif
+sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f /vagrant/Resource/ldap/load_modules.ldif
 
-sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f /vagrant/Resource/add_modules.ldif
+sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f /vagrant/Resource/ldap/add_modules.ldif
 
-ldapadd -x -D cn=admin,dc=example,dc=com -w $config_admin_password  -f /vagrant/Resource/add_content.ldif
+ldapadd -x -D cn=admin,dc=example,dc=com -w $config_admin_password  -f /vagrant/Resource/ldap/add_content.ldif
