@@ -18,4 +18,8 @@ kinit john@EXAMPLE.COM <<EOF
 johnldap
 EOF
 
-echo "-k /etc/krb5-service.keytab get -p john@EXAMPLE.COM HTTP/server.example.com@EXAMPLE.COM" | ktutil
+sudo auth-client-config -a -p kerberos_example
+
+#echo "-k /etc/krb5-service.keytab get -p john@EXAMPLE.COM HTTP/server.example.com@EXAMPLE.COM" | ktutil
+kvno HTTP/server.example.com@EXAMPLE.COM
+klist -e

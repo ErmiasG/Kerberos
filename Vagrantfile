@@ -15,11 +15,11 @@ Vagrant.configure(2) do |config|
     kdc.vm.provider "virtualbox" do |vb|
       vb.linked_clone = true
       vb.cpus = "1"
-      vb.memory = "2048"
+      vb.memory = "1024"
     end
+    kdc.vm.provision "shell", path: "hostes.sh"
     kdc.vm.provision "shell", path: "MasterKDCServer/ldap.sh"
     kdc.vm.provision "shell", path: "MasterKDCServer/kerberos.sh"
-    kdc.vm.provision "shell", path: "hostes.sh"
   end
 
   config.vm.define "server" do |server|
@@ -30,7 +30,7 @@ Vagrant.configure(2) do |config|
     server.vm.provider "virtualbox" do |vb|
       vb.linked_clone = true
       vb.cpus = "2"
-      vb.memory = "4096"
+      vb.memory = "2048"
     end
     server.vm.provision "shell", path: "hostes.sh"
     server.vm.provision "shell", path: "KerberosServer/server.sh"
@@ -44,7 +44,7 @@ Vagrant.configure(2) do |config|
     client.vm.provider "virtualbox" do |vb|
       vb.linked_clone = true
       vb.cpus = "1"
-      vb.memory = "2048"
+      vb.memory = "1024"
     end
     client.vm.provision "shell", path: "hostes.sh"
     client.vm.provision "shell", path: "KerberosClient/client.sh"
