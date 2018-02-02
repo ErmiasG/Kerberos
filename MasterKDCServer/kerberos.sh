@@ -63,7 +63,7 @@ sudo /usr/sbin/kadmin.local -q "ktadd -k /tmp/http_srv.keytab  HTTP/server.examp
 sudo /usr/sbin/kadmin.local -q 'addprinc -randkey admin/admin'
 sudo /usr/sbin/kadmin.local -q "ktadd -k /tmp/admin.keytab admin/admin"
 
-#cp /tmp/*.keytab /vagrant/
+cp /tmp/http_srv.keytab /vagrant/
 
 sudo kadmin.local -q "addprinc -x dn="uid=john,ou=People,dc=example,dc=com" john" <<EOF 
 johnldap

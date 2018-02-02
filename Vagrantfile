@@ -25,14 +25,16 @@ Vagrant.configure(2) do |config|
   config.vm.define "server" do |server|
     server.vm.box = "ubuntu/xenial64"
     server.vm.hostname = "server.example.com"
+    server.vm.network :forwarded_port, host: 8080, guest: 8080
     server.vm.network "private_network", ip: "192.168.10.22"
     server.vm.provider "virtualbox" do |vb|
       vb.linked_clone = true
       vb.cpus = "2"
-      vb.memory = "6144"
+      vb.memory = "4096"
     end
     server.vm.provision "shell", path: "hostes.sh"
     server.vm.provision "shell", path: "KerberosServer/server.sh"
+    server.vm.provision "shell", path: "KerberosServer/jettyServer/createServer.sh"
   end
 
   config.vm.define "client" do |client|

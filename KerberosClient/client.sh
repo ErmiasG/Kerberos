@@ -13,3 +13,9 @@ sed -i -e 's/${REALM}/'$REALM'/g' /etc/krb5.conf
 
 sudo apt-get update  > /dev/null 2>&1
 sudo apt-get -qqy install krb5-user libpam-krb5 libpam-ccreds auth-client-config
+
+kinit john@EXAMPLE.COM <<EOF
+johnldap
+EOF
+
+echo "-k /etc/krb5-service.keytab get -p john@EXAMPLE.COM HTTP/server.example.com@EXAMPLE.COM" | ktutil
