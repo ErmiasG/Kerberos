@@ -18,16 +18,10 @@ cat /vagrant/KerberosServer/jettyServer/spnego.properties > /etc/spnego.properti
 sed -i -e 's/${KERBEROS_FQDN}/'$KERBEROS_FQDN'/g' /etc/krb5.ini
 sed -i -e 's/${DNS_ZONE}/'$DNS_ZONE'/g' /etc/krb5.ini
 sed -i -e 's/${REALM}/'$REALM'/g' /etc/krb5.ini
-sed -i -e 's/${SERVER}/'$SERVER'/g' /etc/krb5.ini
 
-sed -i -e 's/${KERBEROS_FQDN}/'$KERBEROS_FQDN'/g' /etc/spnego.conf
-sed -i -e 's/${DNS_ZONE}/'$DNS_ZONE'/g' /etc/spnego.conf
 sed -i -e 's/${REALM}/'$REALM'/g' /etc/spnego.conf
 sed -i -e 's/${SERVER}/'$SERVER'/g' /etc/spnego.conf
 
-sed -i -e 's/${KERBEROS_FQDN}/'$KERBEROS_FQDN'/g' /etc/spnego.properties
-sed -i -e 's/${DNS_ZONE}/'$DNS_ZONE'/g' /etc/spnego.properties
-sed -i -e 's/${REALM}/'$REALM'/g' /etc/spnego.properties
 sed -i -e 's/${SERVER}/'$SERVER'/g' /etc/spnego.properties
 
 sudo apt-get update  > /dev/null 2>&1
