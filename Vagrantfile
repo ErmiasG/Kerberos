@@ -30,11 +30,11 @@ Vagrant.configure(2) do |config|
     server.vm.provider "virtualbox" do |vb|
       vb.linked_clone = true
       vb.cpus = "2"
-      vb.memory = "2048"
+      vb.memory = "4096"
     end
     server.vm.provision "shell", path: "hostes.sh"
     server.vm.provision "shell", path: "KerberosServer/server.sh"
-    server.vm.provision "shell", path: "KerberosServer/jettyServer/createServer.sh"
+    server.vm.provision "shell", path: "KerberosServer/spnego/createServer.sh"
   end
 
   config.vm.define "client" do |client|
