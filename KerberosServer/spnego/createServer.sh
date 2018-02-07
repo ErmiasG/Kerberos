@@ -2,6 +2,8 @@
 set -eux
 echo "Create Payara Server"
 
+source /vagrant/common.env
+
 sudo apt-get update > /dev/null 2>&1
 sudo apt-get upgrade -y > /dev/null 2>&1
 
@@ -20,5 +22,20 @@ sed -i -e 's/${DNS_ZONE}/'$DNS_ZONE'/g' payara41/glassfish/domains/domain1/confi
 sed -i -e 's/${REALM}/'$REALM'/g' payara41/glassfish/domains/domain1/config/krb5.conf
 sed -i -e 's/${SERVER}/'$SERVER'/g' payara41/glassfish/domains/domain1/config/krb5.conf
 
+cat >> payara41/glassfish/domains/domain1/config/tmpfile <<EOF
+AS_ADMIN_PASSWORD=
+AS_ADMIN_NEWPASSWORD=adminpw
+EOF
+
+cat >> payara41/glassfish/domains/domain1/config/pwdfile <<EOF
+AS_ADMIN_PASSWORD=adminpw
+EOF
+
 payara41/glassfish/bin/asadmin start-domain domain1
-payara41/glassfish/bin/asadmin deploy /vagrant/hello-spnego.war
+
+payara41/glassfish/bin/asadmin --user admin --passwordfile=payara41/glassfish/domains/domain1/config/tmpfile change-admin-password
+payara41/glassfish/bin/asadmin --user admin --passwordfile=payara41/glassfish/domains/domain1/config/pwdfile enable-secure-admin
+
+payara41/glassfish/bin/asadmin --user admin --passwordfile=payara41/glassfish/domains/domain1/config/pwdfile stop-domain domain1
+payara41/glassfish/bin/asadmin --user admin --passwordfile=payara41/glassfish/domains/domain1/config/pwdfile start-domain domain1
+payara41/glassfish/bin/asadmin --user admin --passwordfile=payara41/glassfish/domains/domain1/config/pwdfile deploy /vagrant/hello-spnego.war
