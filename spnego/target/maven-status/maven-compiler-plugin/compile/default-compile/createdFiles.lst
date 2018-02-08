@@ -1,6 +1,0 @@
-com/example/spnego/rest/UnprotectedResources.class
-com/example/spnego/rest/ProtectedResources.class
-com/example/spnego/ldap/realm/LdapRealm.class
-com/example/spnego/rest/application/config/ApplicationConfig.class
-com/example/spnego/rest/JsonResponse.class
-com/example/spnego/ldap/realm/LdapUserDTO.class

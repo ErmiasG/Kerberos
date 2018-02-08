@@ -1,6 +1,0 @@
-/vagrant/spnego/src/main/java/com/example/spnego/ldap/realm/LdapRealm.java
-/vagrant/spnego/src/main/java/com/example/spnego/rest/application/config/ApplicationConfig.java
-/vagrant/spnego/src/main/java/com/example/spnego/rest/ProtectedResources.java
-/vagrant/spnego/src/main/java/com/example/spnego/rest/JsonResponse.java
-/vagrant/spnego/src/main/java/com/example/spnego/ldap/realm/LdapUserDTO.java
-/vagrant/spnego/src/main/java/com/example/spnego/rest/UnprotectedResources.java
