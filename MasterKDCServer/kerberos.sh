@@ -24,7 +24,7 @@ sed -i -e 's/${DNS_ZONE}/'$DNS_ZONE'/g' /etc/krb5.conf
 sed -i -e 's/${REALM}/'$REALM'/g' /etc/krb5.conf
 
 cat /etc/krb5.conf
-cp /etc/krb5.conf /vagrant/krb5.conf
+
 mkdir -p /etc/krb5kdc
 mkdir -p /var/lib/krb5kdc
 
