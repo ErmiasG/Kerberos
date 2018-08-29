@@ -14,8 +14,8 @@ Vagrant.configure(2) do |config|
     kdc.vm.network "private_network", ip: "192.168.10.21"
     kdc.vm.provider "virtualbox" do |vb|
       vb.linked_clone = true
-      vb.cpus = "1"
-      vb.memory = "1024"
+      vb.cpus = "2"
+      vb.memory = "2048"
     end
     kdc.vm.provision "shell", path: "hostes.sh"
     kdc.vm.provision "shell", path: "MasterKDCServer/ldap.sh"
@@ -26,26 +26,40 @@ Vagrant.configure(2) do |config|
     server.vm.box = "ubuntu/xenial64"
     server.vm.hostname = "server.example.com"
     server.vm.network :forwarded_port, host: 8080, guest: 8080
-    server.vm.network :forwarded_port, host: 4848, guest: 4848
+    server.vm.network :forwarded_port, host: 8440, guest: 8440
+    server.vm.network :forwarded_port, host: 8441, guest: 8441
     server.vm.network "private_network", ip: "192.168.10.22"
     server.vm.provider "virtualbox" do |vb|
       vb.linked_clone = true
       vb.cpus = "2"
-      vb.memory = "4096"
+      vb.memory = "2048"
     end
     server.vm.provision "shell", path: "hostes.sh"
-    server.vm.provision "shell", path: "KerberosServer/server.sh"
-    server.vm.provision "shell", path: "KerberosServer/spnego/createServer.sh"
+    server.vm.provision "shell", path: "KerberosServer/ambari-server.sh"
+  end
+
+  config.vm.define "hdp" do |hdp|
+    hdp.vm.box = "bento/ubuntu-16.04"
+    hdp.vm.hostname = "hdp.example.com"
+    hdp.vm.network :forwarded_port, host: 8670, guest: 8670
+    hdp.vm.network "private_network", ip: "192.168.10.23"
+    hdp.vm.provider "virtualbox" do |vb|
+      vb.linked_clone = true
+      vb.cpus = "4"
+      vb.memory = "16000"
+    end
+    hdp.vm.provision "shell", path: "hostes.sh"
+    hdp.vm.provision "shell", path: "KerberosServer/server.sh"
   end
 
   config.vm.define "client" do |client|
     client.vm.box = "ubuntu/xenial64"
     client.vm.hostname = "client.example.com"
-    client.vm.network "private_network", ip: "192.168.10.23"
+    client.vm.network "private_network", ip: "192.168.10.24"
     client.vm.provider "virtualbox" do |vb|
       vb.linked_clone = true
-      vb.cpus = "1"
-      vb.memory = "1024"
+      vb.cpus = "2"
+      vb.memory = "2048"
     end
     client.vm.provision "shell", path: "hostes.sh"
     client.vm.provision "shell", path: "KerberosClient/client.sh"
